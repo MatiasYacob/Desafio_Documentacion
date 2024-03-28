@@ -17,13 +17,9 @@ router.post('/:productId', passportCall('jwt'), authorization(['USUARIO','PREMIU
 
 router.delete('/:productId', passportCall('jwt'), authorization(['USUARIO','PREMIUM']), CartController.removeProductFromCart);
 
-router.delete('/', passportCall('jwt'), authorization(['USUARIO','PREMIUM']), CartController.removeAllProductsFromCart);
 
-router.put('/:_id', CartController.updateProductQuantity);
 
-router.put('/cart/:_id', CartController.updateCart);
 
-router.get('/cart/:cid', CartController.getProductsInCartWithDetails);
 
 router.use(errorHandler)
 

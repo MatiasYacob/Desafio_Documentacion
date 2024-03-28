@@ -93,9 +93,9 @@ paths:
   /api/product/{productId}:
     delete:
       tags: [Product]
-      summary: Eliminar un producto del carrito
+      summary: Eliminar un producto de la BD
       description: >
-        Elimina un producto del carrito utilizando el ID del producto.
+        Elimina un producto de la BD utilizando el ID del producto.
       parameters:
         - in: path
           name: productId
