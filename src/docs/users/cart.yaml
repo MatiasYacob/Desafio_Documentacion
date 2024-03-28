@@ -1,0 +1,186 @@
+openapi: 3.0.0
+info:
+  title: Documentación de la API de Productos
+  description: Documentación de la API para gestionar productos.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Servidor de desarrollo
+tags:
+  - name: Cart
+    description: Endpoints referidos al manejo del Carrito
+
+paths:
+  /cart/tickets/create:
+    post:
+      summary: Crear un nuevo ticket
+      description: Crea un nuevo ticket para un producto.
+      tags: [Cart]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ticket'
+      responses:
+        '200':
+          description: Operación exitosa
+        '500':
+          description: Error interno
+
+  /cart/{productId}:
+    post:
+      summary: Agregar producto al carrito
+      description: Agrega un producto al carrito de compras.
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          description: ID del producto a agregar al carrito
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Operación exitosa
+        '500':
+          description: Error interno
+
+    delete:
+      summary: Eliminar producto del carrito
+      description: Elimina un producto del carrito de compras.
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          description: ID del producto a eliminar del carrito
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Operación exitosa
+        '500':
+          description: Error interno
+
+  /cart:
+    delete:
+      summary: Vaciar carrito
+      description: Elimina todos los productos del carrito de compras.
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: Operación exitosa
+        '500':
+          description: Error interno
+
+    put:
+      summary: Actualizar carrito
+      description: Actualiza la cantidad de productos en el carrito de compras.
+      tags:
+        - Cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          description: Operación exitosa
+        '500':
+          description: Error interno
+
+  /cart/cart/{cid}:
+    get:
+      summary: Obtener productos en el carrito
+      description: Obtiene los productos en el carrito de compras con detalles.
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa
+        '500':
+          description: Error interno
+
+components:
+  schemas:
+    Ticket:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Código único del ticket.
+        purchase_datetime:
+          type: string
+          format: date-time
+          description: Fecha y hora de la compra del ticket.
+        amount:
+          type: number
+          description: Cantidad del ticket.
+        purchaser:
+          type: string
+          description: Comprador del ticket.
+      required:
+        - amount
+        - purchaser
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del producto.
+        price:
+          type: number
+          description: Precio del producto.
+      required:
+        - name
+        - price
+    Cart:
+      type: object
+      properties:
+        user:
+          type: string
+          description: ID del usuario dueño del carrito.
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+                description: ID del producto en el carrito.
+              quantity:
+                type: integer
+                description: Cantidad del producto en el carrito.
+              name:
+                type: string
+                description: Nombre del producto en el carrito.
+              price:
+                type: number
+                description: Precio del producto en el carrito.
+      required:
+        - user
+        - products
